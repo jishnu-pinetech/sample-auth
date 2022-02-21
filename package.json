@@ -1,0 +1,17 @@
+{
+  "name": "machinetest",
+  "version": "1.0.0",
+  "description": "simple user auth app without using any nodejs frameworks",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "run": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jishnu sankar",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mysql": "^2.18.1"
+  }
+}
