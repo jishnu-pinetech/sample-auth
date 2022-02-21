@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Auth-Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      min-width: 250px;
+    }
+
+    /* Include the padding and border in an element's total width and height */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Remove margins and padding from the list */
+    table {
+      margin: 0;
+      min-height: 800px;
+      background: beige;
+      width: 100%;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    /* Style the close button */
+    .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 12px 16px 12px 16px;
+    }
+
+    .close:hover {
+      background-color: #f44336;
+      color: white;
+    }
+
+    /* Style the header */
+    .header {
+      background-color: #bd8a87;
+      padding: 30px 40px;
+      color: white;
+      text-align: center;
+    }
+
+    /* Clear floats after the header */
+    .header:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .actnbtn {
+      color: white;
+      text-decoration: none;
+      display: inline;
+      padding: inherit;
+    }
+
+    #current_user {
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <p id="current_user" />
+    <h2 style="margin:5px">My Users</h2>
+    <br />
+    </b> Goto :</b>
+    <a href="/login" class="actnbtn">Login</a>
+    <a href="/register" class="actnbtn">Register</a>
+    <a href="/" class="actnbtn">Home</a>
+    <a href="/login" class="actnbtn" onclick="LogOut()">Logout</a>
+  </div>
+
+  <!-- Here a loader is created which 
+             loads till response comes -->
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" id="loading">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <table id="users"></table>
+</body>
+
+<script>
+
+  if (!localStorage.getItem("email")) {
+    window.location.replace("/login");
+  }
+
+  document.getElementById("current_user").innerHTML = `Hi ${localStorage.getItem('username')}`;
+
+  // Defining async function
+  async function getapi(url) {
+
+    // Storing response
+    const response = await fetch(url);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data);
+    if (response) {
+      hideloader();
+    }
+    show(data);
+  }
+
+  // Calling that async function
+  getapi("/api/users");
+
+  // Function to hide the loader
+  function hideloader() {
+    document.getElementById('loading').style.display = 'none';
+  }
+  // Function to define innerHTML for HTML table
+  function show(data) {
+    let tab = `<tr> <th>Name</th> <th>Email</th> </tr>`;
+
+    // Loop to access all rows 
+    for (let r of data.users) {
+      tab += `<tr> <td>${r.username} </td> <td>${r.email}</td> </tr>`;
+    }
+
+    // Setting innerHTML as tab variable
+    document.getElementById("users").innerHTML = tab;
+  }
+
+
+  function LogOut() {
+    localStorage.clear("email")
+  }
+</script>
+
+</html>
+<!DOCTYPE html>
